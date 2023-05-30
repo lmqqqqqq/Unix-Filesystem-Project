@@ -314,12 +314,16 @@ void Kernel::fmount(char* from, char* to)
 
 void Kernel::frename(char* Ori, char* Cur)
 {
-	//this->callInit();
+	this->callInit();
 	char* curDir = curdir;
 	string ori = Ori;
 	string cur = Cur;
 	if (ori.find('/') != string::npos) {
 		string nextDir = ori.substr(0, ori.find_last_of('/'));
+		if(nextDir=="")
+		{
+			nextDir = "/";
+		}
 		char nd[128];
 		strcpy_s(nd, nextDir.c_str());
 		cd(nd);
@@ -333,7 +337,7 @@ void Kernel::frename(char* Ori, char* Cur)
 
 void Kernel::dfs_tree(string path, int depth)
 {
-	vector<string> dirs;
+	vector<string> dirs; /* 目录项 */
 	string nextDir;
 
 	this->k_IOParam.m_Offset = 0;
@@ -372,7 +376,6 @@ void Kernel::dfs_tree(string path, int depth)
 			continue;
 		}
 		dirs.emplace_back(this->dent.name);
-		
 	}
 	for (int i = 0; i < dirs.size(); i++) {
 		nextDir = (path == "/" ? "" : path) + '/' + dirs[i];
@@ -382,7 +385,7 @@ void Kernel::dfs_tree(string path, int depth)
 		char nd[128];
 		strcpy_s(nd, nextDir.c_str());
 		cd(nd);
-		if(error == Kernel::NOTDIR)
+		if(error == Kernel::NOTDIR)  /* 访问的是数据文件，不是目录文件 */
 		{
 			error = NO_ERROR;
 			continue;
@@ -398,10 +401,9 @@ void Kernel::dfs_tree(string path, int depth)
 void Kernel::ftree(string path)
 {
 	string curDirPath = curdir;
-	if (curDirPath.length() > 1 && curDirPath.back() == '/')
+	/*if (curDirPath.length() > 1 && curDirPath.back() == '/')
 		curDirPath.pop_back();
-	string curDir = curDirPath;
-
+	string curDir = curDirPath;*/
 	//path = dirp;
 	char nd[128];
 	strcpy_s(nd, path.c_str());
@@ -409,5 +411,6 @@ void Kernel::ftree(string path)
 	
 	cout << "|---" << (path == "/" ? "/" : path.substr(path.find_last_of('/') + 1)) << endl;
 	dfs_tree(path, 0);
-	cd(curdir);
+	strcpy_s(nd, curDirPath.c_str());
+	cd(nd);
 }

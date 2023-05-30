@@ -4,8 +4,8 @@
 
 int main()
 {
-	Kernel* k = Kernel::getInstance();
-	k->initialize();
+	Kernel* k = Kernel::getInstance();   /* 获取内核实例 */
+	k->initialize();                     /* 内核初始化 */
 	
 
 	while (true)
@@ -13,7 +13,7 @@ int main()
 		cout << "[UNIX-FileSystem " << k->curdir << " ] $";
 		char input[100];
 		cin.getline(input, 100);
-		vector<char*> result = Utility::parseCmd(input);
+		vector<char*> result = Utility::parseCmd(input);  /* 解析交互命令 */
 		if (result.size() > 0)
 		{
 			if (strcmp(result[0], "help") ==0)
@@ -31,10 +31,10 @@ int main()
 				cout << "flseek <fd> <offset> <ptrname>         : 定位文件读写指针" << endl;
 				cout << "fdelete <filename>                     : 删除文件" << endl;
 				cout << "cd <dirname>                           : 改变当前目录" << endl;
-				cout << "cp <file1> <file2>                     : 拷贝文件" << endl;
+				cout << "cp <file1> <file2>                     : 拷贝文件内容" << endl;
 				cout << "frename <file1> <file2>                : 重命名文件" << endl;
 				cout << "ftree <dirname>                        : 显示目录树" << endl;
-				cout << "pwd                                    : 显示当前目录" << endl;
+				cout << "pwd                                    : 显示当前路径" << endl;
 				cout << "exit                                   : 退出" << endl;
 				cout << "----------------------UNIX-FileSystem-----------------------" << endl;
 				cout << endl;
@@ -48,11 +48,11 @@ int main()
 						char* padir = k->curdir;
 						if(padir[1]=='\0')
 						{
-							cout << "Already in the root" << endl;
+							cout << "Already in the root!" << endl;
 						}
 						else
 						{
-							for (int i = 127; i >= 0; i--)
+							for (int i = 127; i >= 0; i--) /* 从结尾开始找最后一个/ */
 							{
 								if (padir[i] != '/')
 								{
@@ -68,13 +68,11 @@ int main()
 								}
 							}
 							k->cd(padir);
-							//cout << padir;
 							if (k->error == Kernel::NOTDIR)
 								cout << padir << ": Not a directory" << endl;
 							else if (k->error == Kernel::NOENT)
 								cout << padir << ": No such file or directory" << endl;
 						}
-						
 					}
 					else
 					{
@@ -84,7 +82,6 @@ int main()
 						else if (k->error == Kernel::NOENT)
 							cout << result[1] << ": No such file or directory" << endl;
 					}
-					
 				}
 				else
 					cout << "Operand missed" << endl;
@@ -118,7 +115,7 @@ int main()
 				{
 					const int fd = k->open(result[1], 511);
 					if (k->error == Kernel::NO_ERROR)
-						cout << "fd = " << fd << endl;
+						cout << "文件句柄fd = " << fd << endl;
 					else if (k->error == Kernel::ISDIR)
 						cout << result[1] << ": This is a directory" << endl;
 					else if (k->error == Kernel::NOENT)
@@ -140,7 +137,7 @@ int main()
 					if (k->error == Kernel::ISDIR)
 						cout << result[1] << ": This is a directory" << endl;
 					if (k->error == Kernel::NO_ERROR)
-						cout << "fd = " << fd << endl;
+						cout << "文件句柄fd = " << fd << endl;
 				}
 				else
 					cout << "Operand missed" << endl;
@@ -154,12 +151,10 @@ int main()
 			}
 			else if (strcmp(result[0], "fread") == 0)
 			{
-				int actual;
 				if (result.size() > 2) {
-					char* buf;
-					buf = new char[atoi(result[2])];
+					char* buf = new char[atoi(result[2])];
 					buf[0] = '\0';
-					actual = k->fread(atoi(result[1]), buf, atoi(result[2]));
+					int actual = k->fread(atoi(result[1]), buf, atoi(result[2]));
 					if (actual == -1)
 					{
 						if (k->error == Kernel::BADF)
@@ -184,15 +179,14 @@ int main()
 			}
 			else if (strcmp(result[0], "fwrite") == 0)
 			{
-				int actual;
 				if (result.size() > 3)
 				{
 					if (atoi(result[2]) > strlen(result[3]))
 					{
-						cout << "Read nbytes can not be larger than the length of the string" << endl;
+						cout << "nbytes can not be greater than the length of the string" << endl;
 						continue;
 					}
-					actual = k->fwrite(atoi(result[1]), result[3], atoi(result[2]));
+					int actual = k->fwrite(atoi(result[1]), result[3], atoi(result[2]));
 					if (actual == -1)
 					{
 						if (k->error == Kernel::BADF)
@@ -262,6 +256,8 @@ int main()
 				if (result.size() > 2)
 				{
 					k->frename(result[1], result[2]);
+					if (k->error == Kernel::NOENT)
+						cout << result[2] << ": No such a file or directory" << endl;
 				}
 				else
 				{
