@@ -435,7 +435,7 @@ Inode* FileManager::MakNode(unsigned int mode)
 	}
 		
 	k->k_IOParam.m_Count = DirectoryEntry::DIRSIZ + 4;
-	k->k_IOParam.m_Base = (char*)&k->dent;      //unsigned char*
+	k->k_IOParam.m_Base = (char*)&k->dent;      
 
 	/* 将目录项写入父目录文件 */
 	k->pdir->WriteI();
@@ -507,7 +507,6 @@ void FileManager::Rename(string ori, string cur)
 	Kernel* k = Kernel::getInstance();
 	Buf* pBuf = NULL;
 	BufferManager* bufMgr = k->getBufMgr();
-	//pInode = k->getInodeTable()->IGet(k->dent.inode);
 	pInode = k->cdir;
 	k->k_IOParam.m_Offset = 0;
 	k->k_IOParam.m_Count = pInode->i_size / sizeof(DirectoryEntry);
@@ -519,7 +518,7 @@ void FileManager::Rename(string ori, string cur)
 			pBuf = bufMgr->Bread(phyBlkno); //缓存读新的盘块
 		}
 
-		DirectoryEntry tmp; //
+		DirectoryEntry tmp; 
 		memcpy(&tmp, pBuf->b_addr + (k->k_IOParam.m_Offset % Inode::BLOCK_SIZE), sizeof(k->dent));
 
 		if (strcmp(tmp.name, ori.c_str()) == 0) {

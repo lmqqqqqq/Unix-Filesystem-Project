@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef INODE_H
-//#define INODE_H
 #define min(a, b) a>b?b:a
 #include "Buf.h"
 
@@ -93,5 +91,3 @@ public:
 	int		d_addr[10];		/* 用于文件逻辑块号和物理块号转换的基本索引表 */
 	int		padding[3];		/* 填充使得DiskInode类占64个字节 */   
 };
-
-//#endif

@@ -74,7 +74,7 @@ void Inode::ReadI()
 		pBuf = bufMgr->Bread(bn);
 
 		/* 缓存中数据起始读位置 */
-		char* start = pBuf->b_addr + offset;          //unsigned char*
+		char* start = pBuf->b_addr + offset;          
 		Utility::copy<char>(start, k->k_IOParam.m_Base, nbytes);
 
 		/* 用传送字节数nbytes更新读写位置 */
@@ -127,7 +127,7 @@ void Inode::WriteI()
 		}
 
 		/* 缓存中数据的起始写位置 */
-		char* start = pBuf->b_addr + offset;     //unsigned char*
+		char* start = pBuf->b_addr + offset;     
 
 		/* 写操作: 从用户目标区拷贝数据到缓冲区 */
 		Utility::copy<char>(k->k_IOParam.m_Base, start, nbytes);

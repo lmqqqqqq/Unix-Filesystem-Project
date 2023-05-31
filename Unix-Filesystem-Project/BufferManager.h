@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef BUFFER_MANAGER_H
-//#define BUFFER_MANAGER_H
 #include "Buf.h"
 #include <fstream>
 #include <iostream>
@@ -32,7 +30,7 @@ private:
 	Buf bFreeList;						/* 自由缓存队列控制块，定义有自由队列队头*/
 	Buf m_Buf[NBUF];					/* 缓存控制块数组 */
 	Buf bDevtab;                        /* 设备控制块，定义有设备队列队头 */   //新增成员变量
-	char Buffer[NBUF][BUFFER_SIZE];	    /* 缓冲区数组 */     //unsigned char
+	char Buffer[NBUF][BUFFER_SIZE];	    /* 缓冲区数组 */ 
 };
 
 
@@ -46,4 +44,3 @@ struct writeArg                         /* 异步写时需要向writing函数传递的参数 *
 
 void writing(writeArg*);           /* 利用C++文件流写磁盘块，可由Bwrite开启新线程来调用 */
 
-//#endif

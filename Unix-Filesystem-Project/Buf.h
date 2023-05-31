@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef BUF_H
-//#define BUF_H
 
 /*
  * 缓存控制块buf定义
@@ -31,8 +29,7 @@ public:
 	Buf* av_forw;		
 	Buf* av_back;		
 	int		b_wcount;		/* 需传送的字节数 */
-	char* b_addr;	        /* 指向该缓存控制块所管理的缓冲区的首地址 */  //unsigned char*
-	int		b_blkno;		/* 磁盘逻辑块号 */
+	char* b_addr;	        /* 指向该缓存控制块所管理的缓冲区的首地址 */
+	int     b_blkno;        /* 磁盘逻辑块号 */
 };
 
-//#endif

@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef FILE_SYSTEM_H
-//#define FILE_SYSTEM_H
 #include "Buf.h"
 #include "BufferManager.h"
 #include "OpenfileManager.h"
@@ -60,8 +58,4 @@ public:
 	void IFree(int number); /* 释放编号为number的外存INode，一般用于删除文件*/
 	Buf* Alloc();             /* 分配空闲磁盘块 */
 	void Free(int blkno);     /* 释放编号为blkno的磁盘块 */
-
-	//省略了BufferManager提供的接口
 };
-
-//#endif

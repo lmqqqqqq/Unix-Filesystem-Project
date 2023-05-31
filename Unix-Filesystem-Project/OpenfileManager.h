@@ -1,8 +1,5 @@
 #pragma once
-//#ifndef OPEN_FILE_MANAGER_H
-//#define OPEN_FILE_MANAGER_H
 #include "INode.h"
-//#include "OpenfileManager.h"
 #include "FileSystem.h"
 
 /*
@@ -78,5 +75,3 @@ public:
 public:
 	File* k_OpenFileTable[NOFILES];		/* File对象的指针数组，指向系统打开文件表中的File对象 */
 };
-
-//#endif

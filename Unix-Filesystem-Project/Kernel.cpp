@@ -401,10 +401,7 @@ void Kernel::dfs_tree(string path, int depth)
 void Kernel::ftree(string path)
 {
 	string curDirPath = curdir;
-	/*if (curDirPath.length() > 1 && curDirPath.back() == '/')
-		curDirPath.pop_back();
-	string curDir = curDirPath;*/
-	//path = dirp;
+	
 	char nd[128];
 	strcpy_s(nd, path.c_str());
 	cd(nd);

@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef KERNEL_H
-//#define KERNEL_H
 #include "BufferManager.h"
 #include "FileManager.h"
 #include "FileSystem.h"
@@ -15,7 +13,7 @@ using namespace std;
  */
 struct IOParameter
 {
-	char* m_Base;	/* 当前读、写用户目标区域的首地址 */    //unsigned char*
+	char* m_Base;	/* 当前读、写用户目标区域的首地址 */  
 	int m_Offset;	/* 当前读、写文件的字节偏移量 */
 	int m_Count;	/* 当前还剩余的读、写字节数量 */
 };
@@ -101,5 +99,3 @@ public:
 	int close(int fd);                                  /* 关闭文件 */
 	void clear();                                       /* 系统关闭时收尾工作 */
 };
-
-//#endif

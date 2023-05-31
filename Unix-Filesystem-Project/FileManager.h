@@ -1,6 +1,4 @@
 #pragma once
-//#ifndef FILE_MANAGER_H
-//#define FILE_MANAGER_H
 #include "FileSystem.h"
 #include "OpenfileManager.h"
 
@@ -35,8 +33,8 @@ public:
 	static char NextChar();  /* 获取路径中的下一个字符 */
 	Inode* MakNode(unsigned int mode); /* 被Creat()调用，新建一个文件时，分配资源 */
 	void ChDir();             /* 改变当前工作目录 */
-	void Delete();        /* 删除文件 */    //新增功能
-	void Rename(string ori, string cur);        /* 重命名文件 */  //新增功能
+	void Delete();        /* 删除文件 */    
+	void Rename(string ori, string cur);        /* 重命名文件 */  
 	
 public:
 	Inode* rootDirInode; /* 根目录内存Inode */
@@ -53,5 +51,3 @@ public:
 	int inode;		        /* 目录项中Inode编号部分 */
 	char name[DIRSIZ];	    /* 目录项中路径名部分 */
 };
-
-//#endif
