@@ -94,7 +94,7 @@ public:
 	int fwrite(int writeFd, char* buf, int nbytes);     /* 根据目标区的字符写一个文件 */
 	void fseek(int seekFd, int offset, int ptrname);    /* 改变读写指针的位置 */
 	void fdelete(char* pathname);                       /* 删除文件 */
-	void fmount(char* from, char* to);                  /* 将文件拷贝到磁盘某目录下 */
+	void cp(char* from, char* to);                  /* 将文件拷贝到磁盘某目录下 */
 	void frename(char* ori, char* cur);                 /* 将文件重命名 */
 	void dfs_tree(string path, int depth);
 	void ftree(string path);                             /* 显示目录树 */

@@ -283,7 +283,7 @@ void Kernel::fdelete(char* pathname)
 	this->fileMgr->Delete();
 }
 
-void Kernel::fmount(char* from, char* to)
+void Kernel::cp(char* from, char* to)
 {
 	fstream f(from, ios::in | ios::binary);
 	if (f)
@@ -385,7 +385,7 @@ void Kernel::dfs_tree(string path, int depth)
 		char nd[128];
 		strcpy_s(nd, nextDir.c_str());
 		cd(nd);
-		if(error == Kernel::NOTDIR)  /* 访问的是数据文件，不是目录文件 */
+		if(error != Kernel::NO_ERROR)  /* 访问的是数据文件，不是目录文件 */
 		{
 			error = NO_ERROR;
 			continue;

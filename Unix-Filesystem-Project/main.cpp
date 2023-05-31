@@ -10,9 +10,10 @@ int main()
 
 	while (true)
 	{
+		
 		cout << "[UNIX-FileSystem " << k->curdir << " ] $";
-		char input[100];
-		cin.getline(input, 100);
+		char input[100000];
+		cin.getline(input, 100000);
 		vector<char*> result = Utility::parseCmd(input);  /* 解析交互命令 */
 		if (result.size() > 0)
 		{
@@ -20,9 +21,10 @@ int main()
 			{
 				cout << "----------------------UNIX-FileSystem-----------------------" << endl;
 				cout << "[Commands provided]:" << endl;
+				cout << "help                                   : 显示功能总览" << endl;
 				cout << "fformat                                : 格式化文件卷" << endl;
 				cout << "ls                                     : 列目录" << endl;
-				cout << "mkdir <dirname>                        : 创建目录" << endl;
+				cout << "mkdir <dirname>                        : 创建文件夹" << endl;
 				cout << "fcreate <filename>                     : 新建文件" << endl;
 				cout << "fopen <filename>                       : 打开文件" << endl;
 				cout << "fclose <fd>                            : 关闭文件" << endl;
@@ -30,7 +32,7 @@ int main()
 				cout << "fwrite <fd> <nbytes> <string>          : 写文件" << endl;
 				cout << "flseek <fd> <offset> <ptrname>         : 定位文件读写指针" << endl;
 				cout << "fdelete <filename>                     : 删除文件" << endl;
-				cout << "cd <dirname>                           : 改变当前目录" << endl;
+				cout << "cd <dirname>                           : 改变当前路径" << endl;
 				cout << "cp <file1> <file2>                     : 拷贝文件内容" << endl;
 				cout << "frename <file1> <file2>                : 重命名文件" << endl;
 				cout << "ftree <dirname>                        : 显示目录树" << endl;
@@ -238,7 +240,7 @@ int main()
 			{
 				if (result.size() > 2)
 				{
-					k->fmount(result[1], result[2]);
+					k->cp(result[1], result[2]);
 					if (k->error == Kernel::NOENT)
 						cout << result[2] << ": No such a file or directory" << endl;
 					else if (k->error == Kernel::NOOUTENT)

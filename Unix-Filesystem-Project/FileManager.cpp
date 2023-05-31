@@ -507,7 +507,8 @@ void FileManager::Rename(string ori, string cur)
 	Kernel* k = Kernel::getInstance();
 	Buf* pBuf = NULL;
 	BufferManager* bufMgr = k->getBufMgr();
-	pInode = k->getInodeTable()->IGet(k->dent.inode);
+	//pInode = k->getInodeTable()->IGet(k->dent.inode);
+	pInode = k->cdir;
 	k->k_IOParam.m_Offset = 0;
 	k->k_IOParam.m_Count = pInode->i_size / sizeof(DirectoryEntry);
 	while (k->k_IOParam.m_Count) {
@@ -528,7 +529,7 @@ void FileManager::Rename(string ori, string cur)
 		k->k_IOParam.m_Offset += sizeof(DirectoryEntry);
 		k->k_IOParam.m_Count--;
 	}
-	//char* ans = pBuf->b_addr + ((k->k_IOParam.m_Offset -32 ) % Inode::BLOCK_SIZE)+4 ;
+	char* ans = pBuf->b_addr + ((k->k_IOParam.m_Offset -32 ) % Inode::BLOCK_SIZE)+4 ;
 	if (pBuf)
 	{
 		bufMgr->Bwrite(pBuf);
