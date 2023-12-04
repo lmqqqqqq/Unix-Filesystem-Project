@@ -44,10 +44,10 @@ The project entails the specific implementation of the following components:
 |          fdelete &lt;filename>          |                Delete a file named "filename"                |
 |           fopen &lt;filename>           |                Open the file named "filename"                |
 |             fclose &lt;fd>              |                     Close the file  "fd"                     |
-|        fread &lt;fd> &lt;nbytes>        | Read nbytes from the file "fd," starting from the current file pointer |
+|        fread &lt;fd> &lt;nbytes>        | Read nbytes from the file "fd", starting from the current file pointer |
 |  fwrite &lt;fd> &lt;nbytes>&lt;string>  | Write nbytes of the "string" to the file "fd" at the current file pointer position |
 | flseek &lt;fd> &lt;offset> &lt;ptrname> | Move the file pointer of the file "fd" by offset bytes in the direction specified by ptrname. |
-|        cp &lt;file1> &lt;file2>         |             Copy the contents of file1 to file2.             |
+|        cp &lt;file1> &lt;file2>         |             Copy the contents of file1 to file2            |
 |           ftree &lt;dirname>            | Display the directory tree under the folder named “dirname”  |
 |                   pwd                   |                   Display the current path                   |
 |      Frename &lt;file1> &lt;file2>      |                    Rename file1 to file2                     |
