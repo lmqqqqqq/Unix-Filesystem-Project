@@ -33,23 +33,23 @@ The project entails the specific implementation of the following components:
 
 ## Functionality 
 
-|            Command             |                         Description                          |
-| :----------------------------: | :----------------------------------------------------------: |
-|              help              |            Display an overview of functionalities            |
-|            fformat             |                    Format the file volume                    |
-|               ls               |          List the contents of the current directory          |
-|        mkdir <dirname>         |                     Make a new directory                     |
-|          cd <dirname>          |                 Change the present directory                 |
-|       fcreate <filename>       |                Create a file named "filename"                |
-|       fdelete <filename>       |                Delete a file named "filename"                |
-|        fopen <filename>        |                Open the file named "filename"                |
-|          fclose <fd>           |                     Close the file  "fd"                     |
-|      fread <fd> <nbytes>       | Read nbytes from the file "fd," starting from the current file pointer |
-|  fwrite <fd> <nbytes><string>  | Write nbytes of the "string" to the file "fd" at the current file pointer position |
-| flseek <fd> <offset> <ptrname> | Move the file pointer of the file "fd" by offset bytes in the direction specified by ptrname. |
-|       cp <file1> <file2>       |             Copy the contents of file1 to file2.             |
-|        ftree <dirname>         | Display the directory tree under the folder named “dirname”  |
-|              pwd               |                   Display the current path                   |
-|    Frename <file1> <file2>     |                    Rename file1 to file2                     |
-|              Exit              |                 Exit the current file system                 |
+|                 Command                 |                         Description                          |
+| :-------------------------------------: | :----------------------------------------------------------: |
+|                  help                   |            Display an overview of functionalities            |
+|                 fformat                 |                    Format the file volume                    |
+|                   ls                    |          List the contents of the current directory          |
+|           mkdir &lt;dirname>            |                     Make a new directory                     |
+|             cd &lt;dirname>             |                 Change the present directory                 |
+|          fcreate &lt;filename>          |                Create a file named "filename"                |
+|          fdelete &lt;filename>          |                Delete a file named "filename"                |
+|           fopen &lt;filename>           |                Open the file named "filename"                |
+|             fclose &lt;fd>              |                     Close the file  "fd"                     |
+|        fread &lt;fd> &lt;nbytes>        | Read nbytes from the file "fd," starting from the current file pointer |
+|  fwrite &lt;fd> &lt;nbytes>&lt;string>  | Write nbytes of the "string" to the file "fd" at the current file pointer position |
+| flseek &lt;fd> &lt;offset> &lt;ptrname> | Move the file pointer of the file "fd" by offset bytes in the direction specified by ptrname. |
+|        cp &lt;file1> &lt;file2>         |             Copy the contents of file1 to file2.             |
+|           ftree &lt;dirname>            | Display the directory tree under the folder named “dirname”  |
+|                   pwd                   |                   Display the current path                   |
+|      Frename &lt;file1> &lt;file2>      |                    Rename file1 to file2                     |
+|                  Exit                   |                 Exit the current file system                 |
 
