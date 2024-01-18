@@ -1,7 +1,3 @@
----
-typora-root-url: ./img
----
-
 # Unix-Filesystem-Project
 
 ## Introduction
@@ -63,7 +59,7 @@ The project entails the specific implementation of the following components:
 
    The disk file structure defined in this project is consistent with the disk file structure of Unix V6++. The structure, as shown in the diagram below, includes the SuperBlock, Disk Inode blocks, and file data blocks.
 
-   ![](/Disk file structure.png)
+   ![](img/Disk file structure.png)
 
    - SuperBlock
 
