@@ -57,7 +57,7 @@ The project entails the specific implementation of the following components:
 
 1. Disk file structure 
 
-   The disk file structure defined in this project is consistent with the disk file structure of Unix V6++. The structure, as shown in the diagram below, includes the SuperBlock, Disk Inode blocks, and file data blocks.
+   The disk file structure defined in this project is consistent with the disk file structure of Unix V6++. The structure, as shown in the picture below, includes the SuperBlock, Disk Inode blocks, and file data blocks.
 
    ![img](./img/1.png)
 
@@ -126,8 +126,134 @@ The project entails the specific implementation of the following components:
      
      ```
 
-2. Directory structure 
+2. Directory structure
+
+   ```cpp
+   class DirectoryEntry
+   {
+   public:
+   	static const int DIRSIZ = 28;	/* 目录项中路径部分的最大字符串长度 */
+   public:
+   	DirectoryEntry() {};
+   	~DirectoryEntry() {};
+   public:
+   	int inode;		        /* 目录项中Inode编号部分 */
+   	char name[DIRSIZ];	    /* 目录项中路径名部分 */
+   };
+   
+   ```
 
 3. File open structure 
 
+   If every access to a file requires disk lookup, the file system becomes highly inefficient. To enhance the efficiency of the file system, I establish an efficient file management structure in memory, known as the file open structure. 
+
+   The file open structure comprises the following five data structures: INode, InodeTable, File, OpenFileTable, and OpenFiles. Their logical relationships are illustrated in the picture below
+
+   ![img](./img/2.png)
+
+   -  INode
+
+     ```cpp
+     class Inode
+     {
+     public:
+     	Inode();
+     	~Inode() {};
+     	void ReadI();                   /* 根据Inode对象中的物理磁盘块索引表，读取相应的文件数据 */
+     	void WriteI();                  /* 根据Inode对象中的物理磁盘块索引表，将数据写入文件 */
+     	int Bmap(int lbn);              /* 将文件的逻辑块号转换成对应的物理盘块号 */
+     	void IUpdate();                 /* 更新外存Inode的最后的访问时间、修改时间 */
+     	void ITrunc();                  /* 释放Inode对应文件占用的磁盘块 */
+     	void Clean();                   /* 清空Inode对象中的数据 */
+     	void ICopy(Buf*, int);          /* 将包含外存Inode字符块中信息拷贝到内存Inode中 */
+     public:
+     	unsigned int i_flag;	/* 状态的标志位，定义见enum INodeFlag */
+     	unsigned int i_mode;	/* 文件工作方式信息 */
+     	int		i_count;		/* 引用计数 */
+     	int		i_nlink;		/* 文件联结计数，即该文件在目录树中不同路径名的数量 */
+     	int		i_number;		/* 外存inode区中的编号 */
+     	int		i_size;			/* 文件大小，字节为单位 */
+     	int		i_addr[10];		/* 用于文件逻辑块号和物理块号转换的基本索引表 */
+     };
+     
+     ```
+
+   - InodeTable
+
+     The InodeTable is used to manage in-memory INode, establishing the association between in-memory INode and DiskINode.
+
+     ```cpp
+     class InodeTable
+     {
+     public:
+     	static const int NINODE = 100;	/* 内存Inode的数量 */
+     public:
+     	InodeTable();
+     	~InodeTable();
+     	Inode* IGet(int inumber); /* 根据外存Inode编号获取对应Inode */
+     	void IPut(Inode* pNode);  /* 减少该内存Inode的引用计数，如果此Inode已经没有目录项指向它，且无进程引用该Inode，则释放此文件占用的磁盘块 */
+     	void UpdateInodeTable();  /* 将所有被修改过的内存Inode更新到对应外存Inode中 */
+     	int IsLoaded(int inumber); /* 检查编号为inumber的外存inode是否有内存拷贝。如果有则返回该内存Inode在内存Inode表中的索引 */
+     	Inode* GetFreeInode();     /* 在内存Inode表中寻找一个空闲的内存Inode */
+     public:
+     	Inode m_Inode[NINODE];		/* 内存Inode数组，每个打开文件都会占用一个内存Inode */
+     };
+     
+     ```
+
+   - File
+
+     A file can be opened by one or multiple processes simultaneously, using the same or different path names, and with different operational requirements. However, the in-memory INode does not store this information. Therefore, a class is established to record information related to file openings. This structure keeps track of the read and write request types of the processes opening the file, as well as the file's read and write positions.
+
+     ```cpp
+     class File
+     {
+     public:
+     	enum FileFlags
+     	{
+     		FREAD = 0x1,			/* 读请求类型 */
+     		FWRITE = 0x2,			/* 写请求类型 */
+     		FPIPE = 0x4				/* 管道类型 */
+     	};
+     public:
+     	File();
+     	~File();
+     	unsigned int f_flag;		/* 对打开文件的读、写操作要求 */
+     	int		f_count;			/* 当前引用该文件控制块的进程数量 */
+     	Inode* f_inode;			    /* 指向打开文件的内存Inode指针 */
+     	int		f_offset;			/* 文件读写位置指针 */
+     };
+     
+     ```
+
+   - OpenFileTable
+
+     It is an array of type File, where each entry in the array is a File control block.
+
+     ```cpp
+     class OpenFileTable
+     {
+     public:
+     	static const int NFILE = 100;	/* 打开文件控制块File结构的数量 */
+     public:
+     	OpenFileTable() {};
+     	~OpenFileTable() {};
+     	File* FAlloc();            /* 在系统打开文件表中分配一个空闲的File结构 */
+     	void CloseF(File* pFile); /* 对打开文件控制块File结构的引用计数f_count减1. 若引用计数f_count为0，则释放File结构*/
+     public:
+     	File m_File[NFILE];			/* 系统打开文件表 */
+     };
+     
+     ```
+
 4. Cache structure
+
+   Through the high-speed cache structure, it is possible to reduce the number of disk reads and writes, enhancing the efficiency of the file system. I have designated a cache control block for each cache—Buf class. Simultaneously, the BufferManager class is responsible for implementing the principles of high-speed caching. 
+
+   
+
+   
+
+   
+
+   
